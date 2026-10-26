@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Jobs{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Jobs</h1>
+    <a class="btn btn-primary" href="{{ url_for('add_job') }}">+ Add Job</a>
+</div>
+
+{% if jobs %}
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Company</th>
+            <th>Type</th>
+            <th>Salary</th>
+            <th>Skills</th>
+            <th class="actions-col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for j in jobs %}
+        <tr>
+            <td><a href="{{ url_for('job_detail', job_id=j.job_id) }}">{{ j.job_title }}</a></td>
+            <td>{{ j.company_name }}</td>
+            <td>{{ j.job_type }}</td>
+            <td>
+                {% if j.salary_min and j.salary_max %}{{ j.salary_min|money }} - {{ j.salary_max|money }}
+                {% elif j.salary_min %}From {{ j.salary_min|money }}
+                {% elif j.salary_max %}Up to {{ j.salary_max|money }}
+                {% else %}-{% endif %}
+            </td>
+            <td>
+                {% for skill in j.requirements %}<span class="tag">{{ skill }}</span>{% else %}-{% endfor %}
+            </td>
+            <td class="actions">
+                <a class="btn btn-small" href="{{ url_for('job_detail', job_id=j.job_id) }}">View</a>
+                <a class="btn btn-small" href="{{ url_for('edit_job', job_id=j.job_id) }}">Edit</a>
+                <form method="post" action="{{ url_for('delete_job', job_id=j.job_id) }}"
+                      onsubmit='return confirm({{ ("Delete the job " ~ j.job_title ~ " at " ~ j.company_name ~ "? Its applications will also be deleted.")|tojson }});'>
+                    <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="empty">No jobs yet. Click "Add Job" to create one.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Add' if mode == 'add' else 'Edit' }} Job{% endblock %}
+
+{% block content %}
+<h1>{{ 'Add' if mode == 'add' else 'Edit' }} Job</h1>
+
+{% if not companies %}
+<p class="empty">You need a company first. <a href="{{ url_for('add_company') }}">Add a company</a>, then come back.</p>
+{% else %}
+<form method="post" class="form-card">
+    <label for="job_title">Job title *</label>
+    <input type="text" id="job_title" name="job_title" maxlength="100" required
+           value="{{ job.get('job_title') or '' }}">
+
+    <div class="form-row">
+        <div>
+            <label for="company_id">Company *</label>
+            <select id="company_id" name="company_id" required>
+                <option value="">-- Choose a company --</option>
+                {% for c in companies %}
+                <option value="{{ c.company_id }}"
+                    {{ 'selected' if (job.get('company_id') | string) == (c.company_id | string) }}>
+                    {{ c.company_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="job_type">Job type *</label>
+            <select id="job_type" name="job_type" required>
+                {% for t in job_types %}
+                <option value="{{ t }}" {{ 'selected' if job.get('job_type') == t }}>{{ t }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div>
+            <label for="salary_min">Minimum salary ($)</label>
+            <input type="number" id="salary_min" name="salary_min" min="0" step="1"
+                   value="{{ job.get('salary_min') if job.get('salary_min') is not none else '' }}">
+        </div>
+        <div>
+            <label for="salary_max">Maximum salary ($)</label>
+            <input type="number" id="salary_max" name="salary_max" min="0" step="1"
+                   value="{{ job.get('salary_max') if job.get('salary_max') is not none else '' }}">
+        </div>
+    </div>
+
+    <label for="job_url">Job URL</label>
+    <input type="url" id="job_url" name="job_url" maxlength="300" placeholder="https://example.com/job"
+           value="{{ job.get('job_url') or '' }}">
+
+    <label for="date_posted">Date posted</label>
+    <input type="date" id="date_posted" name="date_posted"
+           value="{{ job.get('date_posted') or '' }}">
+
+    {% set req = job.get('requirements') %}
+    <label for="requirements">Required skills (separate with commas)</label>
+    <input type="text" id="requirements" name="requirements" placeholder="Python, SQL, Flask"
+           value="{{ (req | join(', ')) if req and req is not string else (req or '') }}">
+
+    <div class="form-buttons">
+        <button type="submit" class="btn btn-primary">{{ 'Add Job' if mode == 'add' else 'Save Changes' }}</button>
+        <a class="btn" href="{{ url_for('jobs') }}">Cancel</a>
+    </div>
+</form>
+{% endif %}
+{% endblock %}

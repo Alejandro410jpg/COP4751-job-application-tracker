@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ job.job_title }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ job.job_title }}</h1>
+    <div>
+        <a class="btn" href="{{ url_for('edit_job', job_id=job.job_id) }}">Edit</a>
+        <a class="btn" href="{{ url_for('jobs') }}">Back to list</a>
+    </div>
+</div>
+
+<div class="card">
+    <dl class="details">
+        <dt>Company</dt>
+        <dd><a href="{{ url_for('company_detail', company_id=job.company_id) }}">{{ job.company_name }}</a></dd>
+        <dt>Type</dt><dd>{{ job.job_type }}</dd>
+        <dt>Salary</dt>
+        <dd>
+            {% if job.salary_min and job.salary_max %}{{ job.salary_min|money }} - {{ job.salary_max|money }}
+            {% elif job.salary_min %}From {{ job.salary_min|money }}
+            {% elif job.salary_max %}Up to {{ job.salary_max|money }}
+            {% else %}-{% endif %}
+        </dd>
+        <dt>Date posted</dt><dd>{{ job.date_posted or '-' }}</dd>
+        <dt>Job link</dt>
+        <dd>{% if job.job_url %}<a href="{{ job.job_url }}" target="_blank" rel="noopener">{{ job.job_url }}</a>{% else %}-{% endif %}</dd>
+        <dt>Required skills</dt>
+        <dd>{% for skill in job.requirements %}<span class="tag">{{ skill }}</span>{% else %}-{% endfor %}</dd>
+    </dl>
+</div>
+
+<h2>Applications for this job</h2>
+{% if applications %}
+<table>
+    <thead><tr><th>Date applied</th><th>Status</th><th>Resume</th></tr></thead>
+    <tbody>
+    {% for a in applications %}
+        <tr><td>{{ a.application_date }}</td><td>{{ a.status }}</td><td>{{ a.resume_version or '-' }}</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="empty">No applications yet.</p>
+{% endif %}
+{% endblock %}
