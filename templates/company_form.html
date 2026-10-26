@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Add' if mode == 'add' else 'Edit' }} Company{% endblock %}
+
+{% block content %}
+<h1>{{ 'Add' if mode == 'add' else 'Edit' }} Company</h1>
+
+<form method="post" class="form-card">
+    <label for="company_name">Company name *</label>
+    <input type="text" id="company_name" name="company_name" maxlength="100" required
+           value="{{ company.get('company_name') or '' }}">
+
+    <label for="industry">Industry</label>
+    <input type="text" id="industry" name="industry" maxlength="50"
+           value="{{ company.get('industry') or '' }}">
+
+    <label for="website">Website</label>
+    <input type="url" id="website" name="website" maxlength="200" placeholder="https://example.com"
+           value="{{ company.get('website') or '' }}">
+
+    <div class="form-row">
+        <div>
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" maxlength="50"
+                   value="{{ company.get('city') or '' }}">
+        </div>
+        <div>
+            <label for="state">State</label>
+            <input type="text" id="state" name="state" maxlength="50"
+                   value="{{ company.get('state') or '' }}">
+        </div>
+    </div>
+
+    <label for="notes">Notes</label>
+    <textarea id="notes" name="notes" rows="4">{{ company.get('notes') or '' }}</textarea>
+
+    <div class="form-buttons">
+        <button type="submit" class="btn btn-primary">{{ 'Add Company' if mode == 'add' else 'Save Changes' }}</button>
+        <a class="btn" href="{{ url_for('companies') }}">Cancel</a>
+    </div>
+</form>
+{% endblock %}

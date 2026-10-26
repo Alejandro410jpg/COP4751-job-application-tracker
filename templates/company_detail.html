@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}{{ company.company_name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ company.company_name }}</h1>
+    <div>
+        <a class="btn" href="{{ url_for('edit_company', company_id=company.company_id) }}">Edit</a>
+        <a class="btn" href="{{ url_for('companies') }}">Back to list</a>
+    </div>
+</div>
+
+<div class="card">
+    <dl class="details">
+        <dt>Industry</dt><dd>{{ company.industry or '-' }}</dd>
+        <dt>Location</dt>
+        <dd>
+            {% if company.city or company.state %}
+                {{ [company.city, company.state] | select | join(', ') }}
+            {% else %}-{% endif %}
+        </dd>
+        <dt>Website</dt>
+        <dd>{% if company.website %}<a href="{{ company.website }}" target="_blank" rel="noopener">{{ company.website }}</a>{% else %}-{% endif %}</dd>
+        <dt>Notes</dt><dd>{{ company.notes or '-' }}</dd>
+    </dl>
+</div>
+
+<h2>Jobs at this company</h2>
+{% if jobs %}
+<table>
+    <thead><tr><th>Title</th><th>Type</th><th>Date posted</th></tr></thead>
+    <tbody>
+    {% for j in jobs %}
+        <tr><td>{{ j.job_title }}</td><td>{{ j.job_type }}</td><td>{{ j.date_posted or '-' }}</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="empty">No jobs yet.</p>
+{% endif %}
+
+<h2>Contacts at this company</h2>
+{% if contacts %}
+<table>
+    <thead><tr><th>Name</th><th>Title</th><th>Email</th><th>Phone</th></tr></thead>
+    <tbody>
+    {% for c in contacts %}
+        <tr><td>{{ c.contact_name }}</td><td>{{ c.title or '-' }}</td><td>{{ c.email or '-' }}</td><td>{{ c.phone or '-' }}</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="empty">No contacts yet.</p>
+{% endif %}
+{% endblock %}

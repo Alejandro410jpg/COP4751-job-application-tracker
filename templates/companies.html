@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Companies{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Companies</h1>
+    <a class="btn btn-primary" href="{{ url_for('add_company') }}">+ Add Company</a>
+</div>
+
+{% if companies %}
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Industry</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Website</th>
+            <th class="actions-col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for c in companies %}
+        <tr>
+            <td><a href="{{ url_for('company_detail', company_id=c.company_id) }}">{{ c.company_name }}</a></td>
+            <td>{{ c.industry or '-' }}</td>
+            <td>{{ c.city or '-' }}</td>
+            <td>{{ c.state or '-' }}</td>
+            <td>
+                {% if c.website %}<a href="{{ c.website }}" target="_blank" rel="noopener">Visit</a>{% else %}-{% endif %}
+            </td>
+            <td class="actions">
+                <a class="btn btn-small" href="{{ url_for('company_detail', company_id=c.company_id) }}">View</a>
+                <a class="btn btn-small" href="{{ url_for('edit_company', company_id=c.company_id) }}">Edit</a>
+                <form method="post" action="{{ url_for('delete_company', company_id=c.company_id) }}"
+                      onsubmit='return confirm({{ ("Delete " ~ c.company_name ~ "? Its jobs, applications, and contacts will also be deleted.")|tojson }});'>
+                    <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="empty">No companies yet. Click "Add Company" to create one.</p>
+{% endif %}
+{% endblock %}

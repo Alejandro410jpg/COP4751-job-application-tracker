@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Job Tracker{% endblock %} - Job Application Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <a class="brand" href="/">Job Tracker</a>
+        <div class="nav-links">
+            <a href="/" class="{{ 'active' if request.path == '/' }}">Dashboard</a>
+            <a href="/companies" class="{{ 'active' if request.path.startswith('/companies') }}">Companies</a>
+            <a href="/jobs" class="{{ 'active' if request.path.startswith('/jobs') }}">Jobs</a>
+            <a href="/applications" class="{{ 'active' if request.path.startswith('/applications') }}">Applications</a>
+            <a href="/contacts" class="{{ 'active' if request.path.startswith('/contacts') }}">Contacts</a>
+            <a href="/job-match" class="{{ 'active' if request.path.startswith('/job-match') }}">Job Match</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
