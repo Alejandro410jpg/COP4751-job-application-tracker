@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Add' if mode == 'add' else 'Edit' }} Contact{% endblock %}
+
+{% block content %}
+<h1>{{ 'Add' if mode == 'add' else 'Edit' }} Contact</h1>
+
+{% if not companies %}
+<p class="empty">You need a company first. <a href="{{ url_for('add_company') }}">Add a company</a>, then come back.</p>
+{% else %}
+<form method="post" class="form-card">
+    <label for="contact_name">Name *</label>
+    <input type="text" id="contact_name" name="contact_name" maxlength="100" required
+           value="{{ contact.get('contact_name') or '' }}">
+
+    <label for="company_id">Company *</label>
+    <select id="company_id" name="company_id" required>
+        <option value="">-- Choose a company --</option>
+        {% for c in companies %}
+        <option value="{{ c.company_id }}"
+            {{ 'selected' if (contact.get('company_id') | string) == (c.company_id | string) }}>
+            {{ c.company_name }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label for="title">Job title</label>
+    <input type="text" id="title" name="title" maxlength="100" placeholder="Recruiter"
+           value="{{ contact.get('title') or '' }}">
+
+    <div class="form-row">
+        <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" maxlength="100"
+                   value="{{ contact.get('email') or '' }}">
+        </div>
+        <div>
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" name="phone" maxlength="20" placeholder="305-555-0100"
+                   value="{{ contact.get('phone') or '' }}">
+        </div>
+    </div>
+
+    <label for="linkedin_url">LinkedIn URL</label>
+    <input type="url" id="linkedin_url" name="linkedin_url" maxlength="200" placeholder="https://linkedin.com/in/name"
+           value="{{ contact.get('linkedin_url') or '' }}">
+
+    <label for="notes">Notes</label>
+    <textarea id="notes" name="notes" rows="4">{{ contact.get('notes') or '' }}</textarea>
+
+    <div class="form-buttons">
+        <button type="submit" class="btn btn-primary">{{ 'Add Contact' if mode == 'add' else 'Save Changes' }}</button>
+        <a class="btn" href="{{ url_for('contacts') }}">Cancel</a>
+    </div>
+</form>
+{% endif %}
+{% endblock %}

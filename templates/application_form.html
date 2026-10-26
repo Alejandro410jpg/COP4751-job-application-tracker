@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Add' if mode == 'add' else 'Edit' }} Application{% endblock %}
+
+{% block content %}
+<h1>{{ 'Add' if mode == 'add' else 'Edit' }} Application</h1>
+
+{% if not jobs %}
+<p class="empty">You need a job first. <a href="{{ url_for('add_job') }}">Add a job</a>, then come back.</p>
+{% else %}
+<form method="post" class="form-card">
+    <label for="job_id">Job *</label>
+    <select id="job_id" name="job_id" required>
+        <option value="">-- Choose a job --</option>
+        {% for j in jobs %}
+        <option value="{{ j.job_id }}"
+            {{ 'selected' if (application.get('job_id') | string) == (j.job_id | string) }}>
+            {{ j.job_title }} - {{ j.company_name }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <div class="form-row">
+        <div>
+            <label for="application_date">Date applied *</label>
+            <input type="date" id="application_date" name="application_date" required
+                   value="{{ application.get('application_date') or '' }}">
+        </div>
+        <div>
+            <label for="status">Status *</label>
+            <select id="status" name="status" required>
+                {% for s in statuses %}
+                <option value="{{ s }}" {{ 'selected' if application.get('status') == s }}>{{ s }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <label for="resume_version">Resume version</label>
+    <input type="text" id="resume_version" name="resume_version" maxlength="50" placeholder="v2-software"
+           value="{{ application.get('resume_version') or '' }}">
+
+    <label class="checkbox-label">
+        <input type="checkbox" name="cover_letter_sent" {{ 'checked' if application.get('cover_letter_sent') }}>
+        Cover letter sent
+    </label>
+
+    <h2 class="form-section">Interview details (optional)</h2>
+
+    <div class="form-row">
+        <div>
+            <label for="interview_date">Interview date</label>
+            <input type="date" id="interview_date" name="interview_date"
+                   value="{{ application.get('interview_date') or '' }}">
+        </div>
+        <div>
+            <label for="interview_type">Interview type</label>
+            <select id="interview_type" name="interview_type">
+                <option value="">-- None --</option>
+                {% for t in interview_types %}
+                <option value="{{ t }}" {{ 'selected' if application.get('interview_type') == t }}>{{ t }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <label for="interview_notes">Interview notes</label>
+    <textarea id="interview_notes" name="interview_notes" rows="3">{{ application.get('interview_notes') or '' }}</textarea>
+
+    <div class="form-buttons">
+        <button type="submit" class="btn btn-primary">{{ 'Add Application' if mode == 'add' else 'Save Changes' }}</button>
+        <a class="btn" href="{{ url_for('applications') }}">Cancel</a>
+    </div>
+</form>
+{% endif %}
+{% endblock %}

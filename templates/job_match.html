@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Job Match{% endblock %}
+
+{% block content %}
+<h1>Job Match</h1>
+<p class="intro">Type the skills you have, separated by commas. Jobs are ranked by how many of their required skills you match.</p>
+
+<form method="get" action="{{ url_for('job_match') }}" class="match-form">
+    <input type="text" name="skills" maxlength="500" placeholder="Python, SQL, Flask"
+           value="{{ skills_text }}" aria-label="Your skills" required>
+    <button type="submit" class="btn btn-primary">Find matches</button>
+</form>
+
+{% if results %}
+<p class="intro">Your skills:
+    {% for s in user_skills %}<span class="tag">{{ s }}</span>{% endfor %}
+</p>
+
+{% for r in results %}
+<div class="card match-card">
+    <div class="match-top">
+        <div>
+            <h2 class="match-title"><a href="{{ url_for('job_detail', job_id=r.job.job_id) }}">{{ r.job.job_title }}</a></h2>
+            <div class="match-company">{{ r.job.company_name }} &middot; {{ r.job.job_type }}</div>
+        </div>
+        <div class="match-percent">{{ r.percent }}%</div>
+    </div>
+
+    <div class="bar-track">
+        <div class="bar-fill match-fill" style="width: {{ r.percent }}%"></div>
+    </div>
+
+    {% if r.no_skills %}
+    <p class="empty">This job has no required skills listed.</p>
+    {% else %}
+    <div class="match-skills">
+        <span class="match-label">You have:</span>
+        {% for s in r.matched %}<span class="tag tag-have">{{ s }}</span>{% else %}<span class="empty">none</span>{% endfor %}
+    </div>
+    <div class="match-skills">
+        <span class="match-label">Missing:</span>
+        {% for s in r.missing %}<span class="tag tag-missing">{{ s }}</span>{% else %}<span class="empty">nothing, you match every skill</span>{% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+{% elif searched %}
+{# the error message is already shown above #}
+{% else %}
+<p class="empty">Enter your skills above to see your best matches.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="stat-grid">
+    <a class="stat" href="{{ url_for('companies') }}">
+        <span class="stat-number">{{ stats.companies }}</span>
+        <span class="stat-label">Companies</span>
+    </a>
+    <a class="stat" href="{{ url_for('jobs') }}">
+        <span class="stat-number">{{ stats.jobs }}</span>
+        <span class="stat-label">Jobs</span>
+    </a>
+    <a class="stat" href="{{ url_for('applications') }}">
+        <span class="stat-number">{{ stats.applications }}</span>
+        <span class="stat-label">Applications</span>
+    </a>
+    <a class="stat" href="{{ url_for('contacts') }}">
+        <span class="stat-number">{{ stats.contacts }}</span>
+        <span class="stat-label">Contacts</span>
+    </a>
+</div>
+
+<div class="two-col">
+    <section>
+        <h2>Applications by status</h2>
+        {% if total %}
+        <div class="card">
+            {% for status, count in stats.by_status.items() %}
+            <div class="bar-row">
+                <a class="bar-label" href="{{ url_for('applications', status=status) }}">{{ status }}</a>
+                <div class="bar-track">
+                    <div class="bar-fill bar-{{ status|lower }}" style="width: {{ (count / total * 100)|round(1) }}%"></div>
+                </div>
+                <span class="bar-count">{{ count }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty">No applications yet.</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <h2>Upcoming interviews</h2>
+        {% if upcoming %}
+        <div class="card">
+            <ul class="plain-list">
+            {% for u in upcoming %}
+                <li>
+                    <strong>{{ u.date }}</strong>{% if u.type %} &middot; {{ u.type }}{% endif %}<br>
+                    <a href="{{ url_for('application_detail', application_id=u.application.application_id) }}">
+                        {{ u.application.job_title }} at {{ u.application.company_name }}
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <p class="empty">No upcoming interviews.</p>
+        {% endif %}
+    </section>
+</div>
+
+<h2>Recent applications</h2>
+{% if stats.recent %}
+<table>
+    <thead><tr><th>Job</th><th>Company</th><th>Date applied</th><th>Status</th></tr></thead>
+    <tbody>
+    {% for a in stats.recent %}
+        <tr>
+            <td><a href="{{ url_for('application_detail', application_id=a.application_id) }}">{{ a.job_title }}</a></td>
+            <td>{{ a.company_name }}</td>
+            <td>{{ a.application_date }}</td>
+            <td><span class="badge badge-{{ a.status|lower }}">{{ a.status }}</span></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="empty">No applications yet.</p>
+{% endif %}
+{% endblock %}

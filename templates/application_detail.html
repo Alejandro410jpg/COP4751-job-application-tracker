@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Application{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ application.job_title }}</h1>
+    <div>
+        <a class="btn" href="{{ url_for('edit_application', application_id=application.application_id) }}">Edit</a>
+        <a class="btn" href="{{ url_for('applications') }}">Back to list</a>
+    </div>
+</div>
+
+<div class="card">
+    <dl class="details">
+        <dt>Company</dt><dd>{{ application.company_name }}</dd>
+        <dt>Job</dt>
+        <dd><a href="{{ url_for('job_detail', job_id=application.job_id) }}">{{ application.job_title }}</a></dd>
+        <dt>Date applied</dt><dd>{{ application.application_date }}</dd>
+        <dt>Status</dt><dd><span class="badge badge-{{ application.status|lower }}">{{ application.status }}</span></dd>
+        <dt>Resume version</dt><dd>{{ application.resume_version or '-' }}</dd>
+        <dt>Cover letter sent</dt><dd>{{ 'Yes' if application.cover_letter_sent else 'No' }}</dd>
+    </dl>
+</div>
+
+<h2>Interview</h2>
+{% if interview %}
+<div class="card">
+    <dl class="details">
+        <dt>Date</dt><dd>{{ interview.get('date') or '-' }}</dd>
+        <dt>Type</dt><dd>{{ interview.get('type') or '-' }}</dd>
+        <dt>Notes</dt><dd>{{ interview.get('notes') or '-' }}</dd>
+    </dl>
+</div>
+{% else %}
+<p class="empty">No interview details yet.</p>
+{% endif %}
+{% endblock %}
