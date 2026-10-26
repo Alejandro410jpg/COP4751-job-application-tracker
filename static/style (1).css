@@ -1,0 +1,248 @@
+/* Job Application Tracker - styles */
+
+:root {
+    --blue: #2563eb;
+    --blue-dark: #1d4ed8;
+    --red: #dc2626;
+    --red-dark: #b91c1c;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-600: #4b5563;
+    --gray-900: #111827;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-900);
+    line-height: 1.5;
+}
+
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------- Navbar ---------- */
+.navbar {
+    background: var(--gray-900);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0 24px;
+}
+.navbar .brand {
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 14px 0;
+}
+.navbar .brand:hover { text-decoration: none; }
+.nav-links a {
+    color: #d1d5db;
+    display: inline-block;
+    padding: 16px 14px;
+}
+.nav-links a:hover { color: white; text-decoration: none; }
+.nav-links a.active { color: white; border-bottom: 3px solid var(--blue); }
+
+/* ---------- Layout ---------- */
+.container {
+    max-width: 1000px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+h1 { margin: 0 0 16px; }
+h2 { margin-top: 32px; }
+
+/* ---------- Messages ---------- */
+.flash {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+}
+.flash.success { background: #dcfce7; color: #166534; }
+.flash.error { background: #fee2e2; color: #991b1b; }
+.empty { color: var(--gray-600); font-style: italic; }
+
+/* ---------- Tables ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+th, td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--gray-200);
+}
+th { background: var(--gray-200); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.03em; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #f9fafb; }
+.actions-col { width: 220px; }
+.actions { display: flex; gap: 6px; align-items: center; }
+.actions form { margin: 0; }
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-block;
+    padding: 8px 14px;
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    background: white;
+    color: var(--gray-900);
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+.btn:hover { background: var(--gray-200); text-decoration: none; }
+.btn-primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn-primary:hover { background: var(--blue-dark); }
+.btn-danger { background: var(--red); border-color: var(--red); color: white; }
+.btn-danger:hover { background: var(--red-dark); }
+.btn-small { padding: 4px 10px; font-size: 0.85rem; }
+
+/* ---------- Forms ---------- */
+.form-card, .card {
+    background: white;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.form-card { max-width: 600px; }
+label { display: block; font-weight: 600; margin: 14px 0 4px; }
+input[type="text"], input[type="url"], input[type="number"], input[type="date"],
+input[type="email"], select, textarea {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font: inherit;
+}
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--blue);
+    border-color: var(--blue);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-buttons { margin-top: 20px; display: flex; gap: 8px; }
+
+/* ---------- Detail view ---------- */
+.details { display: grid; grid-template-columns: 140px 1fr; gap: 8px 16px; margin: 0; }
+.details dt { font-weight: 600; color: var(--gray-600); }
+.details dd { margin: 0; }
+
+/* ---------- Dashboard ---------- */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 8px;
+}
+.stat {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    color: var(--gray-900);
+}
+.stat:hover { text-decoration: none; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); }
+.stat-number { font-size: 2.2rem; font-weight: 700; color: var(--blue); line-height: 1.1; }
+.stat-label { color: var(--gray-600); }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.two-col h2 { margin-top: 24px; }
+.plain-list { list-style: none; margin: 0; padding: 0; }
+.plain-list li { padding: 8px 0; border-bottom: 1px solid var(--gray-200); }
+.plain-list li:last-child { border-bottom: none; }
+
+/* ---------- Bars ---------- */
+.bar-row { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+.bar-label { width: 90px; font-size: 0.9rem; color: var(--gray-900); }
+.bar-track { flex: 1; background: var(--gray-200); border-radius: 999px; height: 12px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 999px; background: var(--blue); }
+.bar-count { width: 24px; text-align: right; font-weight: 600; }
+.bar-applied { background: #3b82f6; }
+.bar-screening { background: #8b5cf6; }
+.bar-interview { background: #f59e0b; }
+.bar-offer { background: #16a34a; }
+.bar-rejected { background: #dc2626; }
+.bar-withdrawn { background: #9ca3af; }
+
+/* ---------- Status badges and filters ---------- */
+.badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: var(--gray-200);
+    color: var(--gray-900);
+}
+.badge-applied { background: #dbeafe; color: #1e40af; }
+.badge-screening { background: #ede9fe; color: #5b21b6; }
+.badge-interview { background: #fef3c7; color: #92400e; }
+.badge-offer { background: #dcfce7; color: #166534; }
+.badge-rejected { background: #fee2e2; color: #991b1b; }
+.badge-withdrawn { background: #e5e7eb; color: #374151; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.pill {
+    padding: 4px 14px;
+    border-radius: 999px;
+    background: white;
+    border: 1px solid var(--gray-200);
+    color: var(--gray-900);
+    font-size: 0.9rem;
+}
+.pill:hover { text-decoration: none; background: var(--gray-200); }
+.pill.active { background: var(--blue); border-color: var(--blue); color: white; }
+
+/* ---------- Form extras ---------- */
+.form-section { margin: 28px 0 0; font-size: 1.1rem; border-top: 1px solid var(--gray-200); padding-top: 16px; }
+.checkbox-label { display: flex; align-items: center; gap: 8px; font-weight: normal; margin-top: 16px; }
+.checkbox-label input { width: auto; }
+
+/* ---------- Job match ---------- */
+.intro { color: var(--gray-600); }
+.match-form { display: flex; gap: 8px; margin-bottom: 20px; }
+.match-form input { flex: 1; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font: inherit; }
+.match-card { margin-bottom: 16px; }
+.match-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.match-title { margin: 0; font-size: 1.2rem; }
+.match-company { color: var(--gray-600); }
+.match-percent { font-size: 2rem; font-weight: 700; color: var(--blue); }
+.match-fill { background: #16a34a; }
+.match-skills { margin-top: 10px; }
+.match-label { display: inline-block; width: 80px; white-space: nowrap; font-weight: 600; color: var(--gray-600); }
+.tag.tag-have { background: #dcfce7; color: #166534; }
+.tag.tag-missing { background: #fee2e2; color: #991b1b; }
+
+/* ---------- Skill tags ---------- */
+.tag {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1e40af;
+    border-radius: 999px;
+    padding: 2px 10px;
+    margin: 2px 4px 2px 0;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .match-form { flex-direction: column; }
+    .actions-col { width: auto; }
+}
